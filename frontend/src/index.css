@@ -1,0 +1,199 @@
+@import url('https://fonts.googleapis.com/css2?family=Lexend+Mega:wght@300;700;900&family=Epilogue:ital,wght@0,400;0,600;1,400&display=swap');
+
+:root {
+  /* Palette - Monochrome & Stark */
+  --bg-paper: #ffffff;
+  --ink-black: #000000;
+  --accent-pop: #FFE600;
+  /* Classic comic yellow for highlights */
+  --error-red: #FF2E00;
+
+  /* Dimensions */
+  --border-thick: 6px;
+  --border-thin: 2px;
+  --shadow-depth: 8px;
+
+  /* Typography */
+  --font-headline: 'Lexend Mega', sans-serif;
+  --font-body: 'Epilogue', sans-serif;
+
+  /* Animation */
+  --ease-snap: cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--font-body);
+  background-color: var(--bg-paper);
+  color: var(--ink-black);
+  min-height: 100vh;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  background-image: radial-gradient(var(--ink-black) 1px, transparent 1px);
+  background-size: 40px 40px;
+  /* Halftone dot pattern effect */
+}
+
+/* Layout Utilities */
+.split-screen {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  min-height: 100vh;
+  width: 100vw;
+}
+
+.content-side {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 4rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.login-side {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  background: var(--bg-paper);
+  border-left: var(--border-thick) solid var(--ink-black);
+}
+
+/* Typography */
+h1,
+h2,
+h3 {
+  font-family: var(--font-headline);
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: -0.04em;
+  line-height: 0.9;
+}
+
+/* Comic Card */
+.comic-card {
+  width: 100%;
+  max-width: 400px;
+  background: var(--bg-paper);
+  padding: 3rem;
+
+  /* The Tapered Border Effect */
+  border-top: var(--border-thin) solid var(--ink-black);
+  border-left: var(--border-thin) solid var(--ink-black);
+  border-right: var(--border-thick) solid var(--ink-black);
+  border-bottom: var(--border-thick) solid var(--ink-black);
+
+  /* Hard Shadow for Pop */
+  box-shadow: var(--shadow-depth) var(--shadow-depth) 0 var(--ink-black);
+
+  transform: translate(-4px, -4px);
+  transition: transform 0.2s var(--ease-snap), box-shadow 0.2s var(--ease-snap);
+}
+
+.comic-card:hover {
+  transform: translate(0, 0);
+  box-shadow: 4px 4px 0 var(--ink-black);
+}
+
+/* Inputs */
+.input-group {
+  margin-bottom: 1.5rem;
+  position: relative;
+}
+
+.input-field {
+  width: 100%;
+  padding: 1rem;
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 1rem;
+  border: 3px solid var(--ink-black);
+  background: transparent;
+  border-radius: 0;
+  /* Brutalist square */
+  transition: all 0.2s;
+}
+
+.input-field:focus {
+  outline: none;
+  background: var(--accent-pop);
+  transform: translate(-2px, -2px);
+  box-shadow: 4px 4px 0 var(--ink-black);
+}
+
+.input-label {
+  display: block;
+  font-family: var(--font-headline);
+  font-size: 0.8rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  text-transform: uppercase;
+}
+
+/* Buttons */
+.btn-comic {
+  width: 100%;
+  padding: 1.2rem;
+  background: var(--ink-black);
+  color: var(--bg-paper);
+  font-family: var(--font-headline);
+  font-size: 1.2rem;
+  border: none;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.1s;
+}
+
+.btn-comic:hover {
+  background: var(--error-red);
+  /* Surprise hover color */
+  transform: translate(-2px, -2px);
+  box-shadow: 6px 6px 0 rgba(0, 0, 0, 0.2);
+}
+
+.btn-comic:active {
+  transform: translate(2px, 2px);
+  box-shadow: none;
+}
+
+.btn-comic:disabled {
+  background: #ccc;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+/* Decorative Elements */
+.comic-badge {
+  display: inline-block;
+  background: var(--accent-pop);
+  border: 2px solid var(--ink-black);
+  padding: 0.25rem 0.75rem;
+  font-family: var(--font-headline);
+  font-size: 0.7rem;
+  transform: rotate(-2deg);
+  margin-bottom: 1rem;
+  box-shadow: 2px 2px 0 var(--ink-black);
+}
+
+@media (max-width: 768px) {
+  .split-screen {
+    grid-template-columns: 1fr;
+  }
+
+  .content-side {
+    display: none;
+    /* Hide decorative side on mobile */
+  }
+
+  .login-side {
+    border-left: none;
+  }
+}
