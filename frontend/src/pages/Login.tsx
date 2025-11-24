@@ -1,9 +1,27 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 export default function Login() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [isLoading, setIsLoading] = useState(false);
+    const [rateLimitEndTime, setRateLimitEndTime] = useState<number | null>(null);
+    const [countdown, setCountdown] = useState(0);
+
+    // Countdown effect
+    useEffect(() => {
+        if (rateLimitEndTime) {
+            const timer = setInterval(() => {
+                const remaining = Math.ceil((rateLimitEndTime - Date.now()) / 1000);
+                if (remaining <= 0) {
+                    setRateLimitEndTime(null);
+                    setCountdown(0);
+                } else {
+                    setCountdown(remaining);
+                }
+            }, 1000);
+            return () => clearInterval(timer);
+        }
+    }, [rateLimitEndTime]);
 
     async function login() {
         setIsLoading(true);
@@ -13,6 +31,16 @@ export default function Login() {
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ email, password })
             });
+
+            if (res.status === 429) {
+                // Default to 60 seconds if header is missing
+                const retryAfter = res.headers.get("Retry-After");
+                const waitSeconds = retryAfter ? parseInt(retryAfter) : 60;
+                setRateLimitEndTime(Date.now() + waitSeconds * 1000);
+                setCountdown(waitSeconds);
+                console.error("Rate limit exceeded");
+                return;
+            }
 
             const data = await res.json();
             console.log("Logged in:", data);
@@ -73,6 +101,7 @@ export default function Login() {
                             placeholder="user@example.com"
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
+                            disabled={!!rateLimitEndTime}
                         />
                     </div>
 
@@ -84,15 +113,18 @@ export default function Login() {
                             placeholder="••••••••"
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
+                            disabled={!!rateLimitEndTime}
                         />
                     </div>
 
                     <button
                         className="btn-comic"
                         onClick={login}
-                        disabled={isLoading}
+                        disabled={isLoading || !!rateLimitEndTime}
                     >
-                        {isLoading ? 'PROCESSING...' : 'AUTHENTICATE ->'}
+                        {rateLimitEndTime
+                            ? `TRY AGAIN IN ${countdown}s`
+                            : (isLoading ? 'PROCESSING...' : 'AUTHENTICATE ->')}
                     </button>
 
                     <div style={{

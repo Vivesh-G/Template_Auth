@@ -4,6 +4,8 @@ from database import SessionLocal
 from auth.models import User
 from auth.utils import hash_password, verify_password, create_access_token
 from pydantic import BaseModel
+from fastapi import Request
+from limiter import limiter
 
 router = APIRouter(prefix="/auth", tags=["Authentication"])
 
@@ -39,7 +41,8 @@ def signup(data: SignupModel, db: Session = Depends(get_db)):
     return {"message": "Signup successful", "user_id": new_user.id}
 
 @router.post("/login")
-def login(data: LoginModel, db: Session = Depends(get_db)):
+@limiter.limit("5/minute")
+def login(request: Request, data: LoginModel, db: Session = Depends(get_db)):
     user = db.query(User).filter(User.email == data.email).first()
     if not user or not verify_password(data.password, user.hashed_password):
         raise HTTPException(status_code=401, detail="Invalid email or password")
