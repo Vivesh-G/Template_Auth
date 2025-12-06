@@ -1,6 +1,6 @@
 ### Rate limiting
 Integrate `slowapi` in FastAPI to limit the number of requests to endpoints like `/login` based on IP address.
-Frontend should handle `429 Too Many Requests` responses by disabling buttons and showing a countdown.
+Frontend should handle `429 Too Many Requests` responses by disabling buttons and showing a countdown. [DONE]
 
 ### Refresh token rotation
 When a refresh token is used to get a new access token, issue a new refresh token and revoke the old one.
@@ -8,7 +8,7 @@ If a revoked token is used, invalidate the entire token family to prevent replay
 
 ### Token invalidation (Logout)
 Implement a blocklist (using a database table) to store revoked tokens until their natural expiry.
-Middleware checks this blocklist on every authenticated request to ensure the token is still valid.
+Middleware checks this blocklist on every authenticated request to ensure the token is still valid. [DONE]
 
 ### Email verification
 Generate a unique, time-limited token upon registration and send it via email using `fastapi-mail`.
@@ -16,7 +16,7 @@ Create a frontend route `/verify?token=...` that calls the backend to flip the u
 
 ### Password reset flows
 Create an endpoint to send a reset link with a signed token to the user's email.
-Frontend provides a form to enter a new password, which the backend accepts only if the token is valid.
+Frontend provides a form to enter a new password. [DONE]
 
 ### Brute force protection
 Track failed login attempts by email or IP in Redis or the database.
@@ -38,10 +38,6 @@ Validate the `User-Agent` or IP address inside the token payload against the cur
 Set up a background task (using `APScheduler` or a simple cron job) in FastAPI.
 Periodically delete rows from the `refresh_tokens` database table where the `expires_at` timestamp is in the past.
 
-### Fix vulnerabilities
-Regularly run `npm audit` and `pip-audit` to identify and update insecure dependencies.
-Ensure all database queries use SQLAlchemy's ORM methods to automatically prevent SQL injection.
-
 ### Audit logs
 Create a `logging` table in the database.
-Use a middleware or decorator to record critical actions (logins, data changes) with `user_id`, `timestamp`, `ip_address`, and `action_type`.
+Use a middleware or decorator to record critical actions (logins, data changes) with `user_id`, `timestamp`, `ip_address`, and `action_type`. [DONE]
