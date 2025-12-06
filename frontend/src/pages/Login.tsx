@@ -44,6 +44,10 @@ export default function Login() {
 
             const data = await res.json();
             console.log("Logged in:", data);
+            if (data.access_token) {
+                localStorage.setItem("token", data.access_token);
+                // Optional: Redirect or show success
+            }
         } catch (error) {
             console.error("Login failed:", error);
         } finally {
@@ -131,10 +135,16 @@ export default function Login() {
                         marginTop: '2rem',
                         textAlign: 'center',
                         fontSize: '0.9rem',
-                        fontWeight: '700'
+                        fontWeight: '700',
+                        display: 'flex',
+                        flexDirection: 'column',
+                        gap: '0.5rem'
                     }}>
-                        <a href="#" style={{ color: 'var(--ink-black)', textDecoration: 'underline' }}>
-                            LOST ACCESS KEY?
+                        <a href="/signup" style={{ color: 'var(--ink-black)', textDecoration: 'underline' }}>
+                            CREATE ACCOUNT
+                        </a>
+                        <a href="/change-password" style={{ color: 'var(--ink-black)', textDecoration: 'underline' }}>
+                            UPDATE CREDENTIALS
                         </a>
                     </div>
                 </div>

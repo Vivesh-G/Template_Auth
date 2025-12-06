@@ -1,5 +1,6 @@
 from fastapi import FastAPI
 from auth.routes import router as auth_router
+from auth.models import RevokedToken # Ensure table creation
 from database import Base, engine
 from fastapi.middleware.cors import CORSMiddleware
 from slowapi import _rate_limit_exceeded_handler

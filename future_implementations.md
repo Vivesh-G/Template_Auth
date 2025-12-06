@@ -7,7 +7,7 @@ When a refresh token is used to get a new access token, issue a new refresh toke
 If a revoked token is used, invalidate the entire token family to prevent replay attacks.
 
 ### Token invalidation (Logout)
-Implement a blocklist (using Redis or a database table) to store revoked tokens until their natural expiry.
+Implement a blocklist (using a database table) to store revoked tokens until their natural expiry.
 Middleware checks this blocklist on every authenticated request to ensure the token is still valid.
 
 ### Email verification
